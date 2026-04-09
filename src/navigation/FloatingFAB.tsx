@@ -50,7 +50,7 @@ const FloatingFAB: React.FC = () => {
         styles.fabWrap,
         {
           right: 24,
-          bottom: 120 + insets.bottom,
+          bottom: 90 + insets.bottom,
         },
         fabAnimStyle,
       ]}>

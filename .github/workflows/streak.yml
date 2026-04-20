@@ -1,9 +1,10 @@
 name: Daily Streak
-
 on:
   schedule:
-    - cron: '0 18 * * *'  # 11:30 PM IST
-  workflow_dispatch:       # manual trigger button
+    - cron: '30 3 * * *'   # 9:00 AM IST  (IST = UTC+5:30)
+    - cron: '30 9 * * *'   # 3:00 PM IST
+    - cron: '30 14 * * *'  # 8:00 PM IST
+  workflow_dispatch:
 
 jobs:
   commit:
@@ -12,18 +13,17 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-
       - name: Daily log
         run: |
           mkdir -p log
+          TIMESTAMP=$(date +%Y-%m-%d_%H-%M)
           DATE=$(date +%Y-%m-%d)
-          echo "# $DATE" > "log/$DATE.md"
-          echo "Streak maintained." >> "log/$DATE.md"
-
+          echo "# $DATE - $(date +%H:%M) UTC" > "log/$TIMESTAMP.md"
+          echo "Streak maintained." >> "log/$TIMESTAMP.md"
       - name: Commit & push
         run: |
           git config user.email "your@email.com"
           git config user.name "Aditya"
           git add .
-          git diff --staged --quiet || git commit -m "chore: daily log $(date +%Y-%m-%d)"
+          git diff --staged --quiet || git commit -m "chore: daily log $(date +'%Y-%m-%d %H:%M') IST"
           git push
